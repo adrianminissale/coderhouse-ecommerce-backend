@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
   (async () => {
-    res.json(await cart.getOne(parseInt(req.params.id)))
+    res.json(await cart.getOne(req.params.id))
   })()
 })
 
@@ -23,7 +23,13 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
   (async () => {
-    res.json(await cart.updateOne(parseInt(req.params.id), req.body))
+    res.json(await cart.updateOne(req.params.id, req.body))
+  })()
+})
+
+router.delete('/:id', (req, res) => {
+  (async () => {
+    res.json(await cart.deleteOne(req.params.id))
   })()
 })
 
