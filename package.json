@@ -5,7 +5,8 @@
   "main": "server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --watch '**/*' --exec ts-node ."
+    "dev": "nodemon --watch '**/*' --exec ts-node .",
+    "start": "pm2 start ./server.ts -i max --watch"
   },
   "keywords": [],
   "author": "",
@@ -13,7 +14,8 @@
   "dependencies": {
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "mongoose": "^5.12.3"
+    "mongoose": "^5.12.3",
+    "pm2": "^4.5.6"
   },
   "devDependencies": {
     "@types/express": "^4.17.11",
