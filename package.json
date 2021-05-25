@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --watch '**/*' --exec ts-node .",
-    "start": "pm2 start ./server.ts -i max --watch"
+    "start": "pm2 start ./server.ts -i max --watch",
+    "postinstall": "$(yarn bin)/pm2 install typescript",
+    "pm2logs": "pm2 logs"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +17,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "mongoose": "^5.12.3",
+    "optional-require": "^1.0.3",
     "pm2": "^4.5.6"
   },
   "devDependencies": {
