@@ -8,7 +8,9 @@
     "dev": "nodemon --watch '**/*' --exec ts-node .",
     "start": "pm2 start ./server.ts -i max --watch",
     "postinstall": "$(yarn bin)/pm2 install typescript",
-    "pm2logs": "pm2 logs"
+    "pm2logs": "pm2 logs",
+    "pm2list": "pm2 list",
+    "pm2kill": "pm2 kill"
   },
   "keywords": [],
   "author": "",
