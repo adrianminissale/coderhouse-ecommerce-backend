@@ -1,17 +1,12 @@
-import fs from 'fs'
+import CartModel from '../models/cart.models'
 
 class Cart {
-  private dataFile :string = `${process.cwd()}/src/data/carts.txt`
-  private findOneCart = (carts :[], id :number) => {
-    return carts.find( (cart: { id: number }) => cart.id === id )
-  }
 
   constructor() {}
 
   async getAll () {
     try {
-      const data = await fs.promises.readFile(this.dataFile, 'utf-8')
-      const carts = data ? JSON.parse(data) : []
+      const carts = await CartModel.find()
 
       if (!carts.length)
         throw new Error()
@@ -22,15 +17,14 @@ class Cart {
     }
   }
 
-  async getOne (id :number) {
+  async getOne (id :string) {
     try {
-      const data = await fs.promises.readFile(this.dataFile, 'utf-8')
-      const carts = data ? JSON.parse(data) : []
+      const carts = await CartModel.findById(id)
 
-      if (!carts.length || !this.findOneCart(carts, id))
+      if (!carts)
         throw new Error()
 
-      return this.findOneCart(carts, id)
+      return carts
     } catch {
       return { error: 'carrito no encontrado' }
     }
@@ -38,36 +32,36 @@ class Cart {
 
   async postOne (body :any) {
     try {
-      const data = await fs.promises.readFile(this.dataFile, 'utf-8')
-      let carts = data ? JSON.parse(data) : []
-
-      if (!carts.length) {
-        carts = []
-        body.id = 0
-      } else {
-        body.id = carts.length
-      }
       body.timestamp = Date.now()
-      carts.push(body)
+      await new CartModel(body).save()
 
-      await fs.promises.writeFile(this.dataFile, JSON.stringify(carts))
       return body
     } catch {
       return { error: 'hubo un error al guardar el carrito' }
     }
   }
 
-  async updateOne (id :number, body :any) {
+  async updateOne (id :string, body :any) {
     try {
-      const data = await fs.promises.readFile(this.dataFile, 'utf-8')
-      const carts = data ? JSON.parse(data) : []
+      const cart = await CartModel.findByIdAndUpdate(id, body)
 
-      if (!carts.length || !this.findOneCart(carts, id))
+      if (!cart)
         throw new Error()
 
-      Object.assign(this.findOneCart(carts, id), body)
-      await fs.promises.writeFile(this.dataFile, JSON.stringify(carts))
-      return this.findOneCart(carts, id)
+      return cart
+    } catch {
+      return { error: 'carrito no encontrado' }
+    }
+  }
+
+  async deleteOne (id :string) {
+    try {
+      const cart = await CartModel.findByIdAndDelete(id)
+
+      if (!cart)
+        throw new Error()
+
+      return { success: 'carrito eliminado' }
     } catch {
       return { error: 'carrito no encontrado' }
     }

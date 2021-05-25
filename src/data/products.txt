@@ -1,1 +1,0 @@
-[{"nombre":"cuadernos 2","descripcion":"un re cuaderno","código":12310901,"foto":"https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg","precio":15,"stock":5,"id":0,"timestamp":1615221427755}]

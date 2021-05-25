@@ -5,13 +5,13 @@ const prod = new Products()
 
 router.get('/', (req, res) => {
   (async () => {
-    res.json(await prod.getAll())
+    res.json(await prod.getAll(req.query))
   })()
 })
 
 router.get('/:id', (req, res) => {
   (async () => {
-    res.json(await prod.getOne(parseInt(req.params.id)))
+    res.json(await prod.getOne(req.params.id))
   })()
 })
 
@@ -23,13 +23,13 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
   (async () => {
-    res.json(await prod.updateOne(parseInt(req.params.id), req.body))
+    res.json(await prod.updateOne(req.params.id, req.body))
   })()
 })
 
 router.delete('/:id', (req, res) => {
   (async () => {
-    res.json(await prod.deleteOne(parseInt(req.params.id)))
+    res.json(await prod.deleteOne(req.params.id))
   })()
 })
 

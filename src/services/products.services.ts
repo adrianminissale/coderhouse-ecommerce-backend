@@ -1,17 +1,34 @@
-import fs from 'fs'
+import ProductsModel from '../models/products.models'
+
+interface Params {
+  name?: string;
+  code?: number;
+  price?: string;
+  stock?: string;
+}
 
 class Products {
-  private dataFile :string = `${process.cwd()}/src/data/products.txt`
-  private findOneProduct = (products :[], id :number) => {
-    return products.find( (prod: { id: number }) => prod.id === id )
-  }
 
   constructor() {}
 
-  async getAll () {
+  async getAll (params :Params) {
     try {
-      const data = await fs.promises.readFile(this.dataFile, 'utf-8')
-      const products = data ? JSON.parse(data) : []
+      let products
+
+      if (!Object.keys(params).length) {
+        products = await ProductsModel.find()
+      } else {
+        if (params.name || params.code) {
+          products = await ProductsModel.find(params)
+        } else if (params.price || params.stock) {
+          let [key, value] = Object.entries(params)[0]
+          let range = value.split(',')
+          products = await ProductsModel.find({$and: [
+            {[key]: {$gt: range[0]}},
+            {[key]: {$lt: range[1]}}
+          ]})
+        }
+      }
 
       if (!products.length)
         throw new Error()
@@ -22,15 +39,14 @@ class Products {
     }
   }
 
-  async getOne (id :number) {
+  async getOne (id :string) {
     try {
-      const data = await fs.promises.readFile(this.dataFile, 'utf-8')
-      const products = data ? JSON.parse(data) : []
+      const products = await ProductsModel.findById(id)
 
-      if (!products.length || !this.findOneProduct(products, id))
+      if (!products)
         throw new Error()
 
-      return this.findOneProduct(products, id)
+      return products
     } catch {
       return { error: 'producto no encontrado' }
     }
@@ -38,51 +54,35 @@ class Products {
 
   async postOne (body :any) {
     try {
-      const data = await fs.promises.readFile(this.dataFile, 'utf-8')
-      let products = data ? JSON.parse(data) : []
-
-      if (!products.length) {
-        products = []
-        body.id = 0
-      } else {
-        body.id = products.length
-      }
       body.timestamp = Date.now()
-      products.push(body)
+      await new ProductsModel(body).save()
 
-      await fs.promises.writeFile(this.dataFile, JSON.stringify(products))
       return body
     } catch {
       return { error: 'hubo un error al guardar el producto' }
     }
   }
 
-  async updateOne (id :number, body :any) {
+  async updateOne (id :string, body :any) {
     try {
-      const data = await fs.promises.readFile(this.dataFile, 'utf-8')
-      const products = data ? JSON.parse(data) : []
+      const product = await ProductsModel.findByIdAndUpdate(id, body)
 
-      if (!products.length || !this.findOneProduct(products, id))
+      if (!product)
         throw new Error()
 
-      Object.assign(this.findOneProduct(products, id), body)
-      await fs.promises.writeFile(this.dataFile, JSON.stringify(products))
-      return this.findOneProduct(products, id)
+      return body
     } catch {
       return { error: 'producto no encontrado' }
     }
   }
 
-  async deleteOne (id :number) {
+  async deleteOne (id :string) {
     try {
-      const data = await fs.promises.readFile(this.dataFile, 'utf-8')
-      let products = data ? JSON.parse(data) : []
+      const product = await ProductsModel.findByIdAndDelete(id)
 
-      if (!products.length || !this.findOneProduct(products, id))
+      if (!product)
         throw new Error()
 
-      products = products.filter( (prod: { id: number }) => prod.id !== id )
-      await fs.promises.writeFile(this.dataFile, JSON.stringify(products))
       return { success: 'producto eliminado' }
     } catch {
       return { error: 'producto no encontrado' }
