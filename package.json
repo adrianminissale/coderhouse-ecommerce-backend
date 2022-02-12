@@ -5,9 +5,10 @@
   "main": "server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --exec ts-node .",
     "dev": "nodemon --watch '**/*' --exec ts-node .",
-    "lint": "eslint . --ext ts,js --fix"
+    "lint": "eslint . --ext ts,js --fix",
+    "start": "node dist/server.js",
+    "build": "rm -r dist && tsc && cpy public dist/public && cpy views dist/views"
   },
   "author": "",
   "license": "ISC",
