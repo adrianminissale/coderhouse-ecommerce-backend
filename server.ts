@@ -59,7 +59,7 @@ const auth = require('./middleware/auth.middleware');
 const products = require('./routes/products.routes');
 const cart = require('./routes/cart.routes');
 const chats = require('./routes/chats.routes');
-const ecommerceConnection = require('./database/ecommerce.db.ts');
+const ecommerceConnection = require('./database/ecommerce.db');
 
 if (process.env.MODE === 'cluster' && cluster.isMaster) {
   loggerInfo.info(`Número de procesadores: ${numCPUs}`);

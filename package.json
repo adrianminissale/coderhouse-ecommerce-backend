@@ -4,9 +4,9 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --ignore 'node_modules' --watch '**/*' --exec ts-node .",
-    "lint": "eslint . --ext ts,js --fix"
+    "start": "tsc && node ./server.js",
+    "dev": "nodemon --watch '**/*' --exec ts-node .",
+    "tsc": "tsc"
   },
   "author": "",
   "license": "ISC",
