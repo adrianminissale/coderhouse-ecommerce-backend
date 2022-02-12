@@ -1,0 +1,43 @@
+extends ../layouts/index
+
+block content
+
+  .login
+    if user
+      span Bienvenido #{user.name}
+      span=' | '
+      span= user.email
+      span=' | '
+      img(src=user.photo)
+      span=' | '
+      a(href='/logout') logout
+    else
+      a(href='/login') login
+
+  h1 Ingrese Producto
+  hr
+  form(id='form')
+    .form-group
+      h5 Nombre
+      input.form-control(type='text' name='name' required='true')
+      br
+    .form-group
+      h5 Categoria
+      input.form-control(type='text' name='category' required='true')
+      br
+    .form-group
+      h5 Precio
+      input.form-control(type='number' name='price' required='true')
+      br
+    .form-group
+      h5 Stock
+      input.form-control(type='number' name='stock' required='true')
+      br
+    .form-group
+      h5 Foto URL
+      input.form-control(type='text' name='photo' required='true')
+      br
+    button.btn.btn-success(type='submit') Enviar
+
+  include ./products
+  include ./chat

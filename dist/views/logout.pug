@@ -1,0 +1,9 @@
+extends ../layouts/index
+
+block content
+  h2 Hasta luego #{username}
+
+  script.
+    setTimeout(function(){
+      location.href = '/';
+    }, 2000);

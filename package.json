@@ -8,7 +8,7 @@
     "dev": "nodemon --watch '**/*' --exec ts-node .",
     "lint": "eslint . --ext ts,js --fix",
     "start": "node dist/server.js",
-    "prestart": "tsc && cpy public dist/public && cpy views dist/views"
+    "build": "rm -r dist && tsc && cpy public dist/public && cpy views dist/views"
   },
   "author": "",
   "license": "ISC",
