@@ -19,3 +19,10 @@
 ```
   http://localhost:8080/products?stock=0,4
 ```
+
+### Heroku Rutes
+```
+  https://coderhouse.herokuapp.com/chats
+  https://coderhouse.herokuapp.com/products
+  https://coderhouse.herokuapp.com/cart
+```
